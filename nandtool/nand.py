@@ -116,8 +116,8 @@ class NAND:
     def bch_correct_chunk(self, data, ecc):
         uncorrectable = False
         # modify data and ecc buffers if needed
-        ecc = modify_buffer(ecc, self.layout.ecc_invert, self.layout.ecc_reverse)
-        data = modify_buffer(data, self.layout.data_invert, self.layout.data_reverse)
+        ecc = modify_buffer(ecc, self.layout.ecc_reverse, self.layout.ecc_invert)
+        data = modify_buffer(data, self.layout.data_reverse, self.layout.data_invert)
         if self.layout.left_shift == 4:
             ecc = bytes.fromhex(ecc.hex()[1:] + "0")
 
@@ -139,8 +139,8 @@ class NAND:
         # modify data and ecc buffers to revert back
         if self.layout.left_shift == 4:
             ecc = bytes.fromhex("0" + ecc.hex()[:-1])
-        ecc = modify_buffer(ecc, self.layout.ecc_invert, self.layout.ecc_reverse)
-        data = modify_buffer(data, self.layout.data_invert, self.layout.data_reverse)
+        ecc = modify_buffer(ecc, self.layout.ecc_reverse, self.layout.ecc_invert)
+        data = modify_buffer(data, self.layout.data_reverse, self.layout.data_invert)
 
         return data, ecc, uncorrectable
 
